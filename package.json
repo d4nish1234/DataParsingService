@@ -1,0 +1,15 @@
+{
+  "name": "data-parsing-service",
+  "version": "1.0.0",
+  "description": "a proof of concept of a service that parses data serialization format from XML to JSON",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
