@@ -2,14 +2,18 @@
   "name": "data-parsing-service",
   "version": "1.0.0",
   "description": "a proof of concept of a service that parses data serialization format from XML to JSON",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node ./src/index.js",
+    "start-watch": "nodemon ./src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
   }
 }
