@@ -1,9 +1,38 @@
 import express, { Express, Request, Response } from 'express';
-const app: Express = express()
-const port = 3000
+import { createHandler } from "graphql-http/lib/use/express";
+import { buildSchema } from "graphql";
+import { ruruHTML } from "ruru/server";
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!2');
+// Construct a schema, using GraphQL schema language
+const schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`)
+
+// The root provides a resolver function for each API endpoint
+var root = {
+  hello() {
+    return "Hello world!"
+  },
+}
+
+const app: Express = express()
+const port = 4000
+
+// Create and use the GraphQL handler.
+app.all(
+  "/graphql",
+  createHandler({
+    schema: schema,
+    rootValue: root,
+  })
+)
+
+// Serve the GraphiQL IDE.
+app.get("/", (_req, res) => {
+  res.type("html")
+  res.end(ruruHTML({ endpoint: "/graphql" }))
 })
 
 app.listen(port, () => {
