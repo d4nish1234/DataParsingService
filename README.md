@@ -22,6 +22,10 @@ When you're ready, start your application by running:
 
 Your application will be available at http://localhost:4000.
 
+### Conventional Commits
+Use [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to commit into repo for easier read
+
 ### References
 * [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)
-* Use [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to commit into repo for easier read
+* [Running GraphQL via Express](https://graphql.org/graphql-js/running-an-express-graphql-server/)
+* [Converting JS to typescript](https://medium.com/@mhuckstepp/step-by-step-guide-to-convert-an-existing-express-node-js-backend-to-typescript-931e435ea95d)
