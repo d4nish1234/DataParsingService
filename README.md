@@ -27,5 +27,5 @@ Use [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to co
 
 ### References
 * [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)
-* [Running GraphQL via Express](https://graphql.org/graphql-js/running-an-express-graphql-server/)
+* [Getting started with GraphQL](https://graphql.org/graphql-js/)
 * [Converting JS to typescript](https://medium.com/@mhuckstepp/step-by-step-guide-to-convert-an-existing-express-node-js-backend-to-typescript-931e435ea95d)
