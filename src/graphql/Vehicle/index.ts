@@ -1,4 +1,4 @@
-import { VehicleType } from "../VehicleType";
+import { VehicleType } from "../VehicleType/index.js";
 export class Vehicle {
     vehicleTypes: [VehicleType];
     makeId: number;
