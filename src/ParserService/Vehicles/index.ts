@@ -4,14 +4,14 @@ import { Vehicle } from '../../graphql/Vehicle/index';
 import { VehicleType } from '../../graphql/VehicleType/index';
 import { IVehicleMake, IVehicleTypes } from './models';
 
-import { transformGetVehicleMakesList } from './transforms';
+import { transformGetVehicleMakesList, transformGetMakeInfo } from './transforms';
 
 
 
 import fs from 'fs';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import {getAllMakesData} from '../../../tests/ParserService/getMakesData'
+import {getAllMakesData} from '../../../tests/ParserService/getTestData'
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 

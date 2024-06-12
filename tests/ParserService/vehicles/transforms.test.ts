@@ -1,7 +1,7 @@
-import { getAllMakesData, getFewMakesData } from "../getMakesData";
-import { transformGetVehicleMakesList, transformGetMakeInfo } from "../../../src/ParserService/Vehicles/transforms";
+import { getAllMakesData, getFewMakesData, getVehicleType } from "../getTestData";
+import { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } from "../../../src/ParserService/Vehicles/transforms";
 import { test, describe, it, beforeEach, mock } from "node:test"
-import { IVehicleMake, IVehicleTypes } from '../../../src/ParserService/Vehicles/models.js';
+import { IVehicleMake, IVehicleTypes } from '../../../src/ParserService/Vehicles/models';
 import assert from "node:assert"
 
 describe('vehicles transforms test suite', () => {
@@ -33,13 +33,18 @@ describe('vehicles transforms test suite', () => {
     assert.strictEqual("#1 ALPINE CUSTOMS", firstMakeTransform.Make_Name);
   })
 
-
-  test('actual test', async () => {
-    var allMakesData = await getFewMakesData();
-    var finalTransform = transformGetVehicleMakesList(allMakesData).map(vehicle => {
+  test('get vehicle type', async () => {
+    var fewMakesData = await getFewMakesData();
+    var vehicleTransforms = transformGetVehicleMakesList(fewMakesData).map(vehicle => {
       const vehicleMakeInfo: IVehicleMake = transformGetMakeInfo(vehicle);
       return vehicleMakeInfo;
     });
-    console.log(finalTransform)
+
+    var vehicleTypeRaw = await getVehicleType(vehicleTransforms[0].Make_ID)
+    var transformedVehicleTypes = transformGetVehicleTypes(vehicleTypeRaw)
+    console.log(transformedVehicleTypes)
+    assert('2', transformedVehicleTypes[0].VehicleTypeId[0])
+    assert('Passenger Car', transformedVehicleTypes[0].VehicleTypeName[0])
   })
+
 });
