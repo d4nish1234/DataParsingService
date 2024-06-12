@@ -9,4 +9,3 @@ export class Vehicle {
         this.makeName = makeName;
     }
 }
-

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc",
-    "test": "node --loader tsx --test ./tests/ParserService/vehicles/getAllMakes.test.ts",
+    "test": "node --loader tsx --test ./tests/ParserService/vehicles/transforms.test.ts",
     "start": "node ./dist/index.js",
     "dev": "nodemon ./src/index.ts"
   },

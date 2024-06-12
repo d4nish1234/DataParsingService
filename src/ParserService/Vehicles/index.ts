@@ -2,9 +2,24 @@ import axios from 'axios';
 import { parseString } from 'xml2js';
 import { Vehicle } from '../../graphql/Vehicle/index.js';
 import { VehicleType } from '../../graphql/VehicleType/index.js';
-import { transformGetAllVehicleMakes } from './transforms.js';
+import { IVehicleMake, IVehicleTypes } from './models.js';
+
+import { transformGetVehicleMakesList } from './transforms.js';
+
+
+
+import fs from 'fs';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import {getAllMakesData} from '../../../tests/ParserService/getMakesData.js'
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+
+
 export const getAllVehicleMakesAndTypes = () => {
 
+    
     // axios.get("https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/12858?format=xml").then((res) => {
     //     var parsedXML = parseString(res.data, (err, result) => {
     //         console.log(result.Response.Results[0]["VehicleTypesForMakeIds"]);
@@ -15,17 +30,9 @@ export const getAllVehicleMakesAndTypes = () => {
     //     parseString(res.data, (err, result) => {
 
     //         // TODO ETL test case needed
-    //         interface VehicleMake {
-    //             Make_ID: string
-    //             Make_Name: string
-    //         }
-    //         interface VehicleTypes {
-    //             VehicleTypeId: number
-    //             VehicleTypeName: string
-    //         }
 
 
-    //         transformGetAllVehicleMakes(res).map((el: VehicleMake) => {
+    //         transformGetVehicleMakesList(res).map((el: VehicleMake) => {
     //             var vehicleTypes: [VehicleTypes];
     //             axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${el.Make_ID}?format=xml`).then((res) => {
     //                 parseString(res.data, (err, result) => {
