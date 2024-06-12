@@ -1,20 +1,25 @@
 var axios = require('axios');
 var parseString = require('xml2js').parseString;
-var { Vehicle } = require ('../../graphql/Vehicle/index');
-var { VehicleType } = require ('../../graphql/VehicleType/index');
-var IVehicleMake = require ('./models');
-var { getFewMakesData, getVehicleType } = require ('../../../tests/ParserService/getTestData');
-var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } = require ('./transforms');
+var { Vehicle } = require('../../graphql/Vehicle/index');
+var { VehicleType } = require('../../graphql/VehicleType/index');
+var IVehicleMake = require('./models');
+// var { getOneMakeData, getFewMakesData } = require('../../../tests/ParserService/getTestData');
+var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } = require('./transforms');
 
 export const getAllVehicleMakesAndTypes = async () => {
 
     const getVehicleTypeAPI = async (makeId: string) => {
+        console.log('make id', makeId)
         try {
-            axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${makeId}?format=xml`).then((res: any) => {
-                var parsedXML = parseString(res.data, (_: any, result: any) => {
-                    return result;
-                })
-            });
+            var res = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${makeId}?format=xml`);
+            console.log('res', res)
+            var out;
+            parseString(res.data, (_: any, result: any) => {
+                out = result;
+            })
+            console.log('out is ', out)
+            return out
+
         } catch (error) {
             console.log("getVehicleTypeAPI ", error)
         }
@@ -22,16 +27,21 @@ export const getAllVehicleMakesAndTypes = async () => {
 
     const getMakesAPI = async () => {
         try {
+            var out;
             var res = await axios.get("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=XML");
             parseString(res.data, (err: any, result: any) => {
-                return result;
+                out = result;
             })
+            return out;
         } catch (error) {
             console.log("getMakesAPI ", error)
         }
     }
 
-    var rawVehiclesData = await getFewMakesData(); // TODO: replace with await getMakesAPI();
+    // TODO: make it live uncomment below
+    var rawVehiclesData = await getMakesAPI();
+
+    // var rawVehiclesData = await getFewMakesData(); // TODO: replace with await getMakesAPI();
     var vehicleTransforms = transformGetVehicleMakesList(rawVehiclesData).map((vehicle: any) => {
         const vehicleMakeInfo: typeof IVehicleMake = transformGetMakeInfo(vehicle);
         return vehicleMakeInfo;
@@ -39,7 +49,8 @@ export const getAllVehicleMakesAndTypes = async () => {
 
     var transformedVehicles: typeof Vehicle[] = new Array<typeof Vehicle>();
     await Promise.all(vehicleTransforms.map(async (vehicle: any) => {
-        var vehicleTypeRaw = await getVehicleType(vehicle.Make_ID) // TODO: replace with await getVehicleTypeAPI(vehicle.Make_ID)
+        // var vehicleTypeRaw = await getVehicleType(vehicle.Make_ID) // TEST 
+        var vehicleTypeRaw = await getVehicleTypeAPI(vehicle.Make_ID) // LIVE
         var transformedVehicleTypes = transformGetVehicleTypes(vehicleTypeRaw)
 
         var vehicleTypes: typeof VehicleType[] = new Array<typeof VehicleType>();
@@ -51,7 +62,7 @@ export const getAllVehicleMakesAndTypes = async () => {
         transformedVehicles.push(new Vehicle(vehicleTypes, Number(vehicle.Make_ID), vehicle.Make_Name))
     }))
 
-    console.log(transformedVehicles)
+    // add to persistence layer
 
     return transformedVehicles
 }

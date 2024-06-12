@@ -1,6 +1,6 @@
 var express = require('express');
 var { createHandler} = require("graphql-http/lib/use/express");
-var ruruHTML= require("ruru/server");
+var { ruruHTML } = require("ruru/server")
 var { root } = require ('./graphql/resolver');
 var { schema } = require ('./graphql/schema');
 
