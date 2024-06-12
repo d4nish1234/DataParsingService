@@ -1,59 +1,57 @@
 import axios from 'axios';
-import { parseString } from 'xml2js';
+var parseString = require('xml2js').parseString;
 import { Vehicle } from '../../graphql/Vehicle/index';
 import { VehicleType } from '../../graphql/VehicleType/index';
-import { IVehicleMake, IVehicleTypes } from './models';
+import { IVehicleMake } from './models';
+import { getFewMakesData, getVehicleType } from '../../../tests/ParserService/getTestData';
+import { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } from './transforms';
 
-import { transformGetVehicleMakesList, transformGetMakeInfo } from './transforms';
+export const getAllVehicleMakesAndTypes = async () => {
 
+    const getVehicleTypeAPI = async (makeId: string) => {
+        try {
+            axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${makeId}?format=xml`).then((res) => {
+                var parsedXML = parseString(res.data, (_: any, result: any) => {
+                    return result;
+                })
+            });
+        } catch (error) {
+            console.log("getVehicleTypeAPI ", error)
+        }
+    }
 
+    const getMakesAPI = async () => {
+        try {
+            var res = await axios.get("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=XML");
+            parseString(res.data, (err: any, result: any) => {
+                return result;
+            })
+        } catch (error) {
+            console.log("getMakesAPI ", error)
+        }
+    }
 
-import fs from 'fs';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import {getAllMakesData} from '../../../tests/ParserService/getTestData'
+    var rawVehiclesData = await getFewMakesData(); // TODO: replace with await getMakesAPI();
+    var vehicleTransforms = transformGetVehicleMakesList(rawVehiclesData).map(vehicle => {
+        const vehicleMakeInfo: IVehicleMake = transformGetMakeInfo(vehicle);
+        return vehicleMakeInfo;
+    });
 
-// const __dirname = dirname(fileURLToPath(import.meta.url));
+    var transformedVehicles: Vehicle[] = new Array<Vehicle>();
+    await Promise.all(vehicleTransforms.map(async (vehicle) => {
+        var vehicleTypeRaw = await getVehicleType(vehicle.Make_ID) // TODO: replace with await getVehicleTypeAPI(vehicle.Make_ID)
+        var transformedVehicleTypes = transformGetVehicleTypes(vehicleTypeRaw)
 
+        var vehicleTypes: VehicleType[] = new Array<VehicleType>();
+        transformedVehicleTypes.forEach((vehicleType) => {
+            var transformedVehicleType = transformGetVehicleType(vehicleType);
+            var vehicleTypeDTO = new VehicleType(transformedVehicleType.VehicleTypeId, transformedVehicleType.VehicleTypeName);
+            vehicleTypes.push(vehicleTypeDTO);
+        });
+        transformedVehicles.push(new Vehicle(vehicleTypes, Number(vehicle.Make_ID), vehicle.Make_Name))
+    }))
 
+    console.log(transformedVehicles)
 
-export const getAllVehicleMakesAndTypes = () => {
-
-    
-    // axios.get("https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/12858?format=xml").then((res) => {
-    //     var parsedXML = parseString(res.data, (err, result) => {
-    //         console.log(result.Response.Results[0]["VehicleTypesForMakeIds"]);
-    //     })
-    // });
-
-    // axios.get("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=XML").then((res) => {
-    //     parseString(res.data, (err, result) => {
-
-    //         // TODO ETL test case needed
-
-
-    //         transformGetVehicleMakesList(res).map((el: VehicleMake) => {
-    //             var vehicleTypes: [VehicleTypes];
-    //             axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${el.Make_ID}?format=xml`).then((res) => {
-    //                 parseString(res.data, (err, result) => {
-    //                     vehicleTypes = result.Response.Results[0]["VehicleTypesForMakeIds"];
-    //                     return {
-    //                         makeId: el.Make_ID,
-    //                         makeName: el.Make_Name,
-    //                         vehicleTypes
-    //                     }
-    //                 })
-    //             })
-    //         });
-
-
-    //     })
-    // }).catch((error) => {
-    //     console.error("getAllVehicleMakesAndTypes - could not retreive data for all makes!", error);
-    // })
-
-
-    var vehicleTypeSample = new VehicleType(6, "Trailer");
-    return [new Vehicle([vehicleTypeSample], 34, "Hyundai")];
-
+    return transformedVehicles
 }
