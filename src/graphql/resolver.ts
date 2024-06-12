@@ -1,4 +1,4 @@
-import { getAllVehicleMakesAndTypes } from "../ParserService/Vehicles/index";
+var { getAllVehicleMakesAndTypes } = require("../ParserService/Vehicles/index");
 
 let promiseData = () => {
     return new Promise((resolve, reject) => {

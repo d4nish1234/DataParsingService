@@ -1,4 +1,4 @@
-import { buildSchema } from "graphql";
+var { buildSchema } = require("graphql")
 
 // Construct a schema, using GraphQL schema language
 export const schema = buildSchema(`
