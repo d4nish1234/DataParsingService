@@ -1,13 +1,13 @@
-import { IVehicleMake, IVehicleTypes } from "./models.js";
+var { IVehicleMake, IVehicleTypes } = require ("./models");
 const transformGetVehicleMakesList = ((rootObj: any): Array<any> => {
     return rootObj.Response.Results[0].AllVehicleMakes;
 })
 
-const transformGetMakeInfo = ((vehicleResponse: any): IVehicleMake => {
+const transformGetMakeInfo = ((vehicleResponse: any): typeof IVehicleMake => {
     return { Make_ID: vehicleResponse.Make_ID[0], Make_Name: vehicleResponse.Make_Name[0] }
 })
 
-const transformGetVehicleTypes = ((rootObj: any): IVehicleTypes[] => {
+const transformGetVehicleTypes = ((rootObj: any): typeof IVehicleTypes[] => {
     return rootObj.Response.Results[0]["VehicleTypesForMakeIds"];
 })
 

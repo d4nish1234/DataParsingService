@@ -1,10 +1,10 @@
-import express, { Express, Request, Response } from 'express';
-import { createHandler } from "graphql-http/lib/use/express";
-import { ruruHTML } from "ruru/server";
-import { root } from './graphql/resolver';
-import { schema } from './graphql/schema';
+var express = require('express');
+var { createHandler} = require("graphql-http/lib/use/express");
+var ruruHTML= require("ruru/server");
+var { root } = require ('./graphql/resolver');
+var { schema } = require ('./graphql/schema');
 
-const app: Express = express();
+const app = express();
 
 
 // Create and use the GraphQL handler.
@@ -17,7 +17,7 @@ app.all(
 )
 
 // Serve the GraphiQL IDE.
-app.get("/", (_req: Request, res: Response) => {
+app.get("/", (_req: any, res: any) => {
     res.type("html")
     res.end(ruruHTML({ endpoint: "/graphql" }))
 })

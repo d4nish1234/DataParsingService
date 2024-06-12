@@ -1,16 +1,16 @@
-import axios from 'axios';
+var axios = require('axios');
 var parseString = require('xml2js').parseString;
-import { Vehicle } from '../../graphql/Vehicle/index';
-import { VehicleType } from '../../graphql/VehicleType/index';
-import { IVehicleMake } from './models';
-import { getFewMakesData, getVehicleType } from '../../../tests/ParserService/getTestData';
-import { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } from './transforms';
+var { Vehicle } = require ('../../graphql/Vehicle/index');
+var { VehicleType } = require ('../../graphql/VehicleType/index');
+var IVehicleMake = require ('./models');
+var { getFewMakesData, getVehicleType } = require ('../../../tests/ParserService/getTestData');
+var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } = require ('./transforms');
 
 export const getAllVehicleMakesAndTypes = async () => {
 
     const getVehicleTypeAPI = async (makeId: string) => {
         try {
-            axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${makeId}?format=xml`).then((res) => {
+            axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${makeId}?format=xml`).then((res: any) => {
                 var parsedXML = parseString(res.data, (_: any, result: any) => {
                     return result;
                 })
@@ -32,18 +32,18 @@ export const getAllVehicleMakesAndTypes = async () => {
     }
 
     var rawVehiclesData = await getFewMakesData(); // TODO: replace with await getMakesAPI();
-    var vehicleTransforms = transformGetVehicleMakesList(rawVehiclesData).map(vehicle => {
-        const vehicleMakeInfo: IVehicleMake = transformGetMakeInfo(vehicle);
+    var vehicleTransforms = transformGetVehicleMakesList(rawVehiclesData).map((vehicle: any) => {
+        const vehicleMakeInfo: typeof IVehicleMake = transformGetMakeInfo(vehicle);
         return vehicleMakeInfo;
     });
 
-    var transformedVehicles: Vehicle[] = new Array<Vehicle>();
-    await Promise.all(vehicleTransforms.map(async (vehicle) => {
+    var transformedVehicles: typeof Vehicle[] = new Array<typeof Vehicle>();
+    await Promise.all(vehicleTransforms.map(async (vehicle: any) => {
         var vehicleTypeRaw = await getVehicleType(vehicle.Make_ID) // TODO: replace with await getVehicleTypeAPI(vehicle.Make_ID)
         var transformedVehicleTypes = transformGetVehicleTypes(vehicleTypeRaw)
 
-        var vehicleTypes: VehicleType[] = new Array<VehicleType>();
-        transformedVehicleTypes.forEach((vehicleType) => {
+        var vehicleTypes: typeof VehicleType[] = new Array<typeof VehicleType>();
+        transformedVehicleTypes.forEach((vehicleType: any) => {
             var transformedVehicleType = transformGetVehicleType(vehicleType);
             var vehicleTypeDTO = new VehicleType(transformedVehicleType.VehicleTypeId, transformedVehicleType.VehicleTypeName);
             vehicleTypes.push(vehicleTypeDTO);

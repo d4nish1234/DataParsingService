@@ -1,8 +1,8 @@
-import { getAllMakesData, getFewMakesData, getVehicleType } from "../getTestData";
-import { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } from "../../../src/ParserService/Vehicles/transforms";
-import { test, describe, it, beforeEach, mock } from "node:test"
-import { IVehicleMake, IVehicleTypes } from '../../../src/ParserService/Vehicles/models';
-import assert from "node:assert"
+var { getAllMakesData, getFewMakesData, getVehicleType } = require  ("../getTestData");
+var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } = require  ("../../../src/ParserService/Vehicles/transforms");
+var { test, describe, it, beforeEach, mock } = require  ("node:test")
+var { IVehicleMake, IVehicleTypes } = require  ('../../../src/ParserService/Vehicles/models');
+var assert = require ("node:assert")
 
 describe('vehicles transforms test suite', () => {
 
@@ -36,13 +36,12 @@ describe('vehicles transforms test suite', () => {
   test('get vehicle type', async () => {
     var fewMakesData = await getFewMakesData();
     var vehicleTransforms = transformGetVehicleMakesList(fewMakesData).map(vehicle => {
-      const vehicleMakeInfo: IVehicleMake = transformGetMakeInfo(vehicle);
+      const vehicleMakeInfo: typeof IVehicleMake = transformGetMakeInfo(vehicle);
       return vehicleMakeInfo;
     });
 
     var vehicleTypeRaw = await getVehicleType(vehicleTransforms[0].Make_ID)
     var transformedVehicleTypes = transformGetVehicleTypes(vehicleTypeRaw)
-    console.log(transformedVehicleTypes)
     assert('2', transformedVehicleTypes[0].VehicleTypeId[0])
     assert('Passenger Car', transformedVehicleTypes[0].VehicleTypeName[0])
   })

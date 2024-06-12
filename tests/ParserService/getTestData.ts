@@ -1,13 +1,12 @@
-import { parseString } from 'xml2js';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+var parseString = require('xml2js').parseString;
+var fs = require('fs');
 const path = require("path");
 
 
 const getAllMakesData = async () => {
     const makesData = await fs.promises.readFile(path.resolve((__dirname + "/allMakes.xml")), "utf-8");
     var out;
-    parseString(makesData, (err, result) => {
+    parseString(makesData, (err: any, result: any) => {
         if (err) {
             console.log(err)
         }
@@ -19,7 +18,7 @@ const getAllMakesData = async () => {
 const getFewMakesData = async () => {
     const makesData = await fs.promises.readFile(path.resolve((__dirname + "/fewMakes.xml")), "utf-8");
     var out;
-    parseString(makesData, (err, result) => {
+    parseString(makesData, (err: any, result: any) => {
         if (err) {
             console.log(err)
         }
@@ -28,10 +27,10 @@ const getFewMakesData = async () => {
     return out;
 }
 
-const getVehicleType = async (typeId:string) => {
+const getVehicleType = async (typeId: string) => {
     const vehicleTypeData = await fs.promises.readFile(path.resolve((__dirname + "/vehicleType.xml")), "utf-8");
     var out;
-    parseString(vehicleTypeData, (err, result) => {
+    parseString(vehicleTypeData, (err: any, result: any) => {
         if (err) {
             console.log(err)
         }
@@ -40,4 +39,4 @@ const getVehicleType = async (typeId:string) => {
     return out;
 }
 
-export { getAllMakesData, getFewMakesData, getVehicleType}
+export { getAllMakesData, getFewMakesData, getVehicleType }
