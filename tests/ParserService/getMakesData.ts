@@ -1,12 +1,11 @@
 import { parseString } from 'xml2js';
 import fs from 'fs';
-import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const path = require("path");
 
 
 const getAllMakesData = async () => {
-    const allMakesDataXML = await fs.promises.readFile(__dirname + "/allMakes.xml", "utf-8");
+    const allMakesDataXML = await fs.promises.readFile(path.resolve((__dirname + "/allMakes.xml")), "utf-8");
     var out;
     parseString(allMakesDataXML, (err, result) => {
         if (err) {
@@ -18,7 +17,7 @@ const getAllMakesData = async () => {
 }
 
 const getFewMakesData = async () => {
-    const allMakesDataXML = await fs.promises.readFile(__dirname + "/fewMakes.xml", "utf-8");
+    const allMakesDataXML = await fs.promises.readFile(path.resolve((__dirname + "/fewMakes.xml")), "utf-8");
     var out;
     parseString(allMakesDataXML, (err, result) => {
         if (err) {

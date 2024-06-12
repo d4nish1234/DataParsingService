@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { parseString } from 'xml2js';
-import { Vehicle } from '../../graphql/Vehicle/index.js';
-import { VehicleType } from '../../graphql/VehicleType/index.js';
-import { IVehicleMake, IVehicleTypes } from './models.js';
+import { Vehicle } from '../../graphql/Vehicle/index';
+import { VehicleType } from '../../graphql/VehicleType/index';
+import { IVehicleMake, IVehicleTypes } from './models';
 
-import { transformGetVehicleMakesList } from './transforms.js';
+import { transformGetVehicleMakesList } from './transforms';
 
 
 
 import fs from 'fs';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import {getAllMakesData} from '../../../tests/ParserService/getMakesData.js'
+import {getAllMakesData} from '../../../tests/ParserService/getMakesData'
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// const __dirname = dirname(fileURLToPath(import.meta.url));
 
 
 

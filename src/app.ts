@@ -1,8 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import { createHandler } from "graphql-http/lib/use/express";
 import { ruruHTML } from "ruru/server";
-import { root } from './graphql/resolver.js';
-import { schema } from './graphql/schema.js';
+import { root } from './graphql/resolver';
+import { schema } from './graphql/schema';
 
 const app: Express = express();
 

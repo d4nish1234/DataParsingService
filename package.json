@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "a proof of concept of a service that parses data serialization format from XML to JSON",
   "main": "dist/index.js",
-  "type": "module",
   "scripts": {
     "build": "npx tsc",
     "test": "node --loader tsx --test ./tests/ParserService/vehicles/transforms.test.ts",
