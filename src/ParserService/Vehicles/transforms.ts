@@ -1,4 +1,4 @@
-import { IVehicleMake, IVehicleTypes } from "./models.js";
+import { IVehicleMake, IVehicleTypes } from "./models"
 const transformGetVehicleMakesList = ((rootObj: any): Array<any> => {
     return rootObj.Response.Results[0].AllVehicleMakes;
 })
