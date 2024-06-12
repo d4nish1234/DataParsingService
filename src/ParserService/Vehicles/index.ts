@@ -3,21 +3,20 @@ var parseString = require('xml2js').parseString;
 var { Vehicle } = require('../../graphql/Vehicle/index');
 var { VehicleType } = require('../../graphql/VehicleType/index');
 var IVehicleMake = require('./models');
-// var { getOneMakeData, getFewMakesData } = require('../../../tests/ParserService/getTestData');
+const { Sequelize, DataTypes } = require('sequelize');
 var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } = require('./transforms');
 
 export const getAllVehicleMakesAndTypes = async () => {
 
+
     const getVehicleTypeAPI = async (makeId: string) => {
-        console.log('make id', makeId)
+        console.log('reading make id...', makeId)
         try {
             var res = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleTypesForMakeId/${makeId}?format=xml`);
-            console.log('res', res)
             var out;
             parseString(res.data, (_: any, result: any) => {
                 out = result;
             })
-            console.log('out is ', out)
             return out
 
         } catch (error) {
@@ -38,7 +37,6 @@ export const getAllVehicleMakesAndTypes = async () => {
         }
     }
 
-    // TODO: make it live uncomment below
     var rawVehiclesData = await getMakesAPI();
 
     // var rawVehiclesData = await getFewMakesData(); // TODO: replace with await getMakesAPI();
@@ -62,7 +60,19 @@ export const getAllVehicleMakesAndTypes = async () => {
         transformedVehicles.push(new Vehicle(vehicleTypes, Number(vehicle.Make_ID), vehicle.Make_Name))
     }))
 
-    // add to persistence layer
+    // persistence
+    // should be in its own folder structure
+    const sequelize = new Sequelize('sqlite::memory:');
+
+    const ParsingOut = sequelize.define('parse_output', {
+        data: DataTypes.TEXT,
+        service: DataTypes.TEXT,
+    });
+    await sequelize.sync({ force: true });
+    await ParsingOut.create({
+        data: transformedVehicles.toString(),
+        service: 'vehicles'
+    });
 
     return transformedVehicles
 }
