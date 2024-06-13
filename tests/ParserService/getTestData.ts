@@ -52,4 +52,16 @@ const getVehicleType = async (typeId: string) => {
     return out;
 }
 
-export { getAllMakesData, getFewMakesData, getVehicleType, getOneMakeData }
+const getZeroVehicleType = async (typeId: string) => {
+    const vehicleTypeData = await fs.promises.readFile(path.resolve((__dirname + "/zeroVehicleType.xml")), "utf-8");
+    var out;
+    parseString(vehicleTypeData, (err: any, result: any) => {
+        if (err) {
+            console.log(err)
+        }
+        out = result
+    })
+    return out;
+}
+
+export { getAllMakesData, getFewMakesData, getVehicleType, getOneMakeData, getZeroVehicleType }

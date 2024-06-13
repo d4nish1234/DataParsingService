@@ -1,4 +1,4 @@
-var { getAllMakesData, getFewMakesData, getVehicleType } = require  ("../getTestData");
+var { getAllMakesData, getFewMakesData, getVehicleType, getZeroVehicleType } = require  ("../getTestData");
 var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType, getVehicleMakesCount } = require  ("../../../src/ParserService/Vehicles/transforms");
 var { test, describe, it, beforeEach, mock } = require  ("node:test")
 var { IVehicleMake, IVehicleTypes } = require  ('../../../src/ParserService/Vehicles/models');
@@ -15,7 +15,7 @@ describe('vehicles transforms test suite', () => {
   test('get all vehicles and test count', async () => {
     var allMakesData = await getAllMakesData();
     var count = getVehicleMakesCount(allMakesData);
-    assert.strictEqual(count, transformGetVehicleMakesList(allMakesData).length);
+    assert.strictEqual(Number(count), transformGetVehicleMakesList(allMakesData).length);
   })
 
   test('get Make id and name', async () => {
@@ -47,4 +47,17 @@ describe('vehicles transforms test suite', () => {
     assert('Passenger Car', transformedVehicleTypes[0].VehicleTypeName[0])
   })
 
+  test('get vehicle type', async () => {
+    var fewMakesData = await getFewMakesData();
+    var vehicleTransforms = transformGetVehicleMakesList(fewMakesData).map(vehicle => {
+      const vehicleMakeInfo: typeof IVehicleMake = transformGetMakeInfo(vehicle);
+      return vehicleMakeInfo;
+    });
+
+    var vehicleTypeRaw = await getZeroVehicleType(vehicleTransforms[0].Make_ID)
+    var transformedVehicleTypes = transformGetVehicleTypes(vehicleTypeRaw)
+    assert('undefined', transformedVehicleTypes)
+  })
+
+  
 });
