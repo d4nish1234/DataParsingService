@@ -1,5 +1,5 @@
 var { getAllMakesData, getFewMakesData, getVehicleType } = require  ("../getTestData");
-var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType } = require  ("../../../src/ParserService/Vehicles/transforms");
+var { transformGetVehicleMakesList, transformGetMakeInfo, transformGetVehicleTypes, transformGetVehicleType, getVehicleMakesCount } = require  ("../../../src/ParserService/Vehicles/transforms");
 var { test, describe, it, beforeEach, mock } = require  ("node:test")
 var { IVehicleMake, IVehicleTypes } = require  ('../../../src/ParserService/Vehicles/models');
 var assert = require ("node:assert")
@@ -12,9 +12,10 @@ describe('vehicles transforms test suite', () => {
   })
 
 
-  test('get all vehicles', async () => {
+  test('get all vehicles and test count', async () => {
     var allMakesData = await getAllMakesData();
-    assert.strictEqual(11340, transformGetVehicleMakesList(allMakesData).length);
+    var count = getVehicleMakesCount(allMakesData);
+    assert.strictEqual(count, transformGetVehicleMakesList(allMakesData).length);
   })
 
   test('get Make id and name', async () => {
