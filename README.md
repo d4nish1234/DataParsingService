@@ -36,7 +36,7 @@ Use [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to co
 
 # Considerations
 
-- The API is really difficult to work with because even though the API can be mocked I constantly found myself getting "Access Denied" response from the vehicles API call. To mitigate this, I put a delay of 200ms in between get vehicle type information. This could be sped up by understanding what the time to hit the API treshold for the downstream service is.
+- The API is really difficult to work with because even though the API can be mocked I constantly found myself getting "Access Denied" response from the vehicles API call. To mitigate this, I put a delay of 200ms in between get vehicle type information. This could be sped up by understanding what the time to hit the API treshold for the downstream service is. With added delays in between the api calls, I was able to get the response in 1 hour and 30 mins.
 - I used SQL lite to persist data, but ideally we should use an ORM database or a nosql db to persist data, which brings more options
 - Next steps:
     - Adding lint and prettier tools
