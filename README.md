@@ -36,10 +36,10 @@ Use [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to co
 
 # Considerations
 
-- The API is really difficult to work with because even though the API can be mocked I constantly found myself getting "Access Denied" response from the vehicles API call. To mitigate this, we can use a sleep, but the con for that is it will take longer to debug and fix any issues that come as part of parsing. Parsing can also be done in increments of say 100 and know how much parsing was done, that is a workaround for running into "hitting too many API in short amount of time issue"
+- The API is really difficult to work with because even though the API can be mocked I constantly found myself getting "Access Denied" response from the vehicles API call. To mitigate this, I put a delay of 200ms in between get vehicle type information. This could be sped up by understanding what the time to hit the API treshold for the downstream service is.
 - I used SQL lite to persist data, but ideally we should use an ORM database or a nosql db to persist data, which brings more options
 - Next steps:
     - Adding lint and prettier tools
     - For future services, devs can expand ParserService or create additional services for different actions
     - Xml to json can also be parsed using dynamic cycling. Meaning any xml would convert to json with transformations in between (using patterns)
-    - Caching is crutial for this project, since parsing can be huge, we can use something like Redis to perform caching
+    - Caching is crutial for this project, since parsing can be huge, we can use something like Redis to perform caching. We can also leverage existing database and expire the data after x amount of days.
