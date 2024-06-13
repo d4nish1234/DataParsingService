@@ -4,9 +4,9 @@ A proof of concept of a project structure for a service that parses data seriali
 ## Onboarding
 
 ### Requirements
-Ensure you have the following:
-- Node: 18.18.0+
-- NPM: 10.8.1+
+The following app and their version was used to build the application
+- Node: 18.18.0
+- NPM: 10.8.1
 - latest version of Docker
 
 ### Installing dependencies and running the app
@@ -21,6 +21,10 @@ When you're ready, start your application by running:
 `docker compose up --build`.
 
 Your application will be available at http://localhost:4000.
+
+### Unit Tests
+
+To run test execute `npm run test`. On higher version of nodde you might need to make changes to the script from `--loader` to `--import`
 
 ### Conventional Commits
 Use [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to commit into repo for easier read
