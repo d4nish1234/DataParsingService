@@ -4,7 +4,7 @@ A proof of concept of a project structure for a service that parses data seriali
 ## Onboarding
 
 ### Requirements
-The following app and their version was used to build the application
+The following versions of dependencies were used to work with the application
 - Node: 18.18.0
 - NPM: 10.8.1
 - latest version of Docker
