@@ -43,3 +43,4 @@ Use [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to co
     - For future services, devs can expand ParserService or create additional services for different actions
     - Xml to json can also be parsed using dynamic cycling. Meaning any xml would convert to json with transformations in between (using patterns)
     - Caching is crutial for this project, since parsing can be huge, we can use something like Redis to perform caching. We can also leverage existing database and expire the data after x amount of days.
+    - Since it does take a while to parse and persist the data, it will be useful to run parsing executon as a worker outside peak load time to update the persistence layer
